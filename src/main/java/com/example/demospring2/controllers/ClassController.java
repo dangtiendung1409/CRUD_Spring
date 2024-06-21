@@ -3,16 +3,15 @@ package com.example.demospring2.controllers;
 import com.example.demospring2.entity.ClassRoom;
 import com.example.demospring2.service.ClassRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/classroom")
 public class ClassController {
-
     private final ClassRoomService classRoomService;
 
     @Autowired
@@ -21,9 +20,13 @@ public class ClassController {
     }
 
     @GetMapping("/list")
-    public String getClassRoomList(Model model) {
-        List<ClassRoom> classRooms = classRoomService.getAllClassRooms();
-        model.addAttribute("classRooms", classRooms);
+    public String getClassRoomList(Model model,
+                                   @RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size) {
+        Page<ClassRoom> classRooms = classRoomService.getAllClassRooms(PageRequest.of(page, size));
+        model.addAttribute("classRooms", classRooms.getContent());
+        model.addAttribute("totalPages", classRooms.getTotalPages());
+        model.addAttribute("currentPage", page);
         return "class/index";
     }
 

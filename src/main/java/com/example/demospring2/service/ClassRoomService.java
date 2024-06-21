@@ -3,9 +3,9 @@ package com.example.demospring2.service;
 import com.example.demospring2.dao.IClassRoomDAO;
 import com.example.demospring2.entity.ClassRoom;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ClassRoomService {
@@ -16,8 +16,8 @@ public class ClassRoomService {
         this.classRoomDAO = classRoomDAO;
     }
 
-    public List<ClassRoom> getAllClassRooms() {
-        return classRoomDAO.getAllClassRooms();
+    public Page<ClassRoom> getAllClassRooms(Pageable pageable) {
+        return classRoomDAO.getAllClassRooms(pageable);
     }
 
     public ClassRoom getClassRoomById(long id) {
