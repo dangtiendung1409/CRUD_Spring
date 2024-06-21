@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Student</title>
+    <th:block th:include="/include/head"></th:block>
+</head>
+<body>
+<th:block th:include="/include/header"></th:block>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Edit Student</h1>
+    <form th:action="@{/student/update/{id}(id=${student.id})}" th:object="${student}" method="post">
+        <!-- Email -->
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" th:field="*{email}" class="form-control" id="email">
+            <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="form-text text-danger"></small>
+        </div>
+
+        <!-- First Name -->
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" th:field="*{firstName}" class="form-control" id="firstName">
+            <small th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="form-text text-danger"></small>
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" th:field="*{lastName}" class="form-control" id="lastName">
+            <small th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="form-text text-danger"></small>
+        </div>
+
+        <!-- Class Room -->
+        <div class="form-group">
+            <label for="classRoom">Class Room</label>
+            <select class="form-control" id="classRoom" th:field="*{classRoom.idClass}">
+                <option th:each="classRoom : ${classRooms}"
+                        th:value="${classRoom.idClass}"
+                        th:text="${classRoom.className}"
+                        th:selected="${classRoom.idClass == student.classRoom?.idClass}">
+                </option>
+            </select>
+            <small th:if="${#fields.hasErrors('classRoom')}" th:errors="*{classRoom}" class="form-text text-danger"></small>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary mr-2">Save</button>
+            <a th:href="@{/student/list}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </form>
+</div>
+<th:block th:include="/include/footer"></th:block>
+</body>
+</html>

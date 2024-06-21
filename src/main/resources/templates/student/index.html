@@ -2,39 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>class room</title>
+    <title>Student</title>
     <th:block th:include="/include/head"></th:block>
 </head>
 <body>
 <th:block th:include="/include/header"></th:block>
-<h1>Welcome Student</h1>
+<h1 class="text-center mb-4">Students</h1>
 <table class="table">
+    <button style="border: none; float: left; margin-left: 10px; margin-bottom: 10px;" class="btn btn-primary">
+        <a style="text-decoration: none; color: white;" href="/student/save">+ Create</a>
+    </button>
     <thead>
     <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th>ID</th>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Class Name</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
+    <tr th:each="student : ${students}">
+        <td th:text="${student.id}"></td>
+        <td th:text="${student.email}"></td>
+        <td th:text="${student.firstName}"></td>
+        <td th:text="${student.lastName}"></td>
+        <td th:if="${student.classRoom != null}" th:text="${student.classRoom.className}"></td>
+        <td th:unless="${student.classRoom != null}">No class assigned</td>
+        <td>
+            <a th:href="@{/student/edit/{id}(id=${student.id})}" class="btn btn-primary btn-sm">Edit</a>
+            <a th:href="@{/student/delete/{id}(id=${student.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
+        </td>
     </tr>
-    <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-    </tr>
-    <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-    </tr>
+
     </tbody>
 </table>
 <th:block th:include="/include/footer"></th:block>

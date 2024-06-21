@@ -5,13 +5,17 @@ import com.example.demospring2.service.ClassRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/classroom")
 public class ClassController {
+
     private final ClassRoomService classRoomService;
 
     @Autowired
@@ -20,13 +24,17 @@ public class ClassController {
     }
 
     @GetMapping("/list")
-    public String getClassRoomList(Model model,
-                                   @RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "10") int size) {
-        Page<ClassRoom> classRooms = classRoomService.getAllClassRooms(PageRequest.of(page, size));
-        model.addAttribute("classRooms", classRooms.getContent());
-        model.addAttribute("totalPages", classRooms.getTotalPages());
-        model.addAttribute("currentPage", page);
+    public String getClassRoomList(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model,
+            @RequestParam(value = "message", required = false) String message) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("idClass"));
+        Page<ClassRoom> classRoomPage = classRoomService.getAllClassRooms(pageable);
+        model.addAttribute("classRoomPage", classRoomPage);
+        if (message != null) {
+            model.addAttribute("message", message);
+        }
         return "class/index";
     }
 
@@ -59,8 +67,9 @@ public class ClassController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteClassRoom(@PathVariable("id") long id) {
-        classRoomService.deleteClassRoom(id);
+    public String deleteClassRoom(@PathVariable("id") long id, RedirectAttributes redirectAttributes) {
+        String result = classRoomService.deleteClassRoom(id);
+        redirectAttributes.addFlashAttribute("message", result);
         return "redirect:/classroom/list";
     }
 }

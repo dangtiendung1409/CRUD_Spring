@@ -16,24 +16,31 @@ public class StudentService {
         this.studentDAO = studentDAO;
     }
 
-    public void saveStudent(Student student) {
-        studentDAO.saveStudent(student);
+    public List<Student> getAllStudents() {
+        return studentDAO.getAllStudents();
     }
 
     public Student getStudentById(int id) {
         return studentDAO.getStudentById(id);
     }
 
-    public List<Student> getAllStudents() {
-        return studentDAO.getAllStudents();
+    public void saveStudent(Student student) {
+        studentDAO.saveStudent(student);
     }
 
-    public void deleteStudent(Student student) {
-        studentDAO.deleteStudent(student);
+    public void updateStudent(int id, Student studentDetails) {
+        Student student = studentDAO.getStudentById(id);
+        if (student != null) {
+            student.setEmail(studentDetails.getEmail());
+            student.setFirstName(studentDetails.getFirstName());
+            student.setLastName(studentDetails.getLastName());
+            student.setClassRoom(studentDetails.getClassRoom()); // Cập nhật thông tin lớp học
+            studentDAO.saveStudent(student);
+        }
     }
 
-    public void deleteStudentById(int id) {
-        Student student = getStudentById(id);
+    public void deleteStudent(int id) {
+        Student student = studentDAO.getStudentById(id);
         if (student != null) {
             studentDAO.deleteStudent(student);
         }

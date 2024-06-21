@@ -8,6 +8,11 @@
 <body>
 <th:block th:include="/include/header"></th:block>
 <h1 class="text-center mb-4">Class Room</h1>
+
+<div th:if="${message != null}" class="alert alert-info" role="alert">
+    <span th:text="${message}"></span>
+</div>
+
 <table class="table">
     <button style="border: none; float: left; margin-left: 10px; margin-bottom: 10px;" class="btn btn-primary">
         <a style="text-decoration: none; color: white;" href="/classroom/save">+ Create</a>
@@ -21,7 +26,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="classRoom : ${classRooms}">
+    <tr th:each="classRoom : ${classRoomPage.content}">
         <td th:text="${classRoom.idClass}"></td>
         <td th:text="${classRoom.className}"></td>
         <td th:text="${classRoom.numberMember}"></td>
@@ -34,14 +39,18 @@
 </table>
 <nav aria-label="Page navigation example">
     <ul class="pagination">
-        <li th:classappend="${currentPage == 0} ? 'disabled' : ''">
-            <a th:href="@{/classroom/list(page=${currentPage - 1}, size=${10})}" class="page-link">Previous</a>
+        <li class="page-item" th:classappend="${classRoomPage.first} ? 'disabled'">
+            <a class="page-link" th:href="@{/classroom/list(page=${classRoomPage.number - 1}, size=${classRoomPage.size})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
         </li>
-        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''">
-            <a th:href="@{/classroom/list(page=${i}, size=${10})}" th:text="${i + 1}" class="page-link"></a>
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, classRoomPage.totalPages - 1)}" th:classappend="${i == classRoomPage.number} ? 'active'">
+            <a class="page-link" th:href="@{/classroom/list(page=${i}, size=${classRoomPage.size})}" th:text="${i + 1}"></a>
         </li>
-        <li th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
-            <a th:href="@{/classroom/list(page=${currentPage + 1}, size=${10})}" class="page-link">Next</a>
+        <li class="page-item" th:classappend="${classRoomPage.last} ? 'disabled'">
+            <a class="page-link" th:href="@{/classroom/list(page=${classRoomPage.number + 1}, size=${classRoomPage.size})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
         </li>
     </ul>
 </nav>

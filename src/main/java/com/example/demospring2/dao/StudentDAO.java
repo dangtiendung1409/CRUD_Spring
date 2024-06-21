@@ -35,6 +35,10 @@ public class StudentDAO implements IStudentDAO {
     @Override
     @Transactional
     public void deleteStudent(Student student) {
-        entityManager.remove(entityManager.contains(student) ? student : entityManager.merge(student));
+        if (entityManager.contains(student)) {
+            entityManager.remove(student);
+        } else {
+            entityManager.remove(entityManager.merge(student));
+        }
     }
 }
