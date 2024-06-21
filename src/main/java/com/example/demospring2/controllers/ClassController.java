@@ -28,12 +28,16 @@ public class ClassController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             Model model,
-            @RequestParam(value = "message", required = false) String message) {
+            @RequestParam(value = "message", required = false) String message,
+            @RequestParam(value = "error", required = false) String error) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("idClass"));
         Page<ClassRoom> classRoomPage = classRoomService.getAllClassRooms(pageable);
         model.addAttribute("classRoomPage", classRoomPage);
         if (message != null) {
             model.addAttribute("message", message);
+        }
+        if (error != null) {
+            model.addAttribute("error", error);
         }
         return "class/index";
     }
@@ -69,7 +73,11 @@ public class ClassController {
     @GetMapping("/delete/{id}")
     public String deleteClassRoom(@PathVariable("id") long id, RedirectAttributes redirectAttributes) {
         String result = classRoomService.deleteClassRoom(id);
-        redirectAttributes.addFlashAttribute("message", result);
+        if (result.contains("không thể xoá")) {
+            redirectAttributes.addFlashAttribute("error", result);
+        } else {
+            redirectAttributes.addFlashAttribute("message", result);
+        }
         return "redirect:/classroom/list";
     }
 }

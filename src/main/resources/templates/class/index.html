@@ -13,6 +13,10 @@
     <span th:text="${message}"></span>
 </div>
 
+<div th:if="${error != null}" class="alert alert-danger" role="alert">
+    <span th:text="${error}"></span>
+</div>
+
 <table class="table">
     <button style="border: none; float: left; margin-left: 10px; margin-bottom: 10px;" class="btn btn-primary">
         <a style="text-decoration: none; color: white;" href="/classroom/save">+ Create</a>
