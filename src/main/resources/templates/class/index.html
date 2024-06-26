@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Class Room</title>
-    <th:block th:include="/include/head"></th:block>
+    <div th:replace="/include/fragments :: head"></div>
 </head>
 <body>
-<th:block th:include="/include/header"></th:block>
+<div th:replace="/include/fragments :: header"></div>
 <h1 class="text-center mb-4">Class Room</h1>
 
 <div th:if="${message != null}" class="alert alert-info" role="alert">
@@ -58,6 +58,6 @@
         </li>
     </ul>
 </nav>
-<th:block th:include="/include/footer"></th:block>
+<div th:replace="/include/fragments :: footer"></div>
 </body>
 </html>

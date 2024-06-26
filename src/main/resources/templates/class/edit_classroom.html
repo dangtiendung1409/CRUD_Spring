@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>class room</title>
-    <th:block th:include="/include/head"></th:block>
+    <div th:replace="/include/fragments :: head"></div>
 </head>
 <body>
-<th:block th:include="/include/header"></th:block>
+<div th:replace="/include/fragments :: header"></div>
 <div class="container mt-5">
     <h1 class="text-center mb-4">Edit Class Room</h1>
     <form th:action="@{/classroom/update/{id}(id=${classRoom.idClass})}" th:object="${classRoom}" method="post">
@@ -24,6 +24,6 @@
         </div>
     </form>
 </div>
-
+<div th:replace="/include/fragments :: footer"></div>
 </body>
 </html>
