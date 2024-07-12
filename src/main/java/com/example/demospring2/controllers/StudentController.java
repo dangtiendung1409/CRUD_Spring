@@ -1,7 +1,9 @@
 package com.example.demospring2.controllers;
 
 import com.example.demospring2.service.StudentService;
-
+import com.example.demospring2.dto.StudentDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import com.example.demospring2.entity.Student;
 import com.example.demospring2.service.ClassRoomService;
 import jakarta.validation.Valid;
@@ -73,5 +75,10 @@ public class StudentController {
     public String deleteStudent(@PathVariable("id") int id) {
         studentService.deleteStudent(id);
         return "redirect:/student/list";
+    }
+    @GetMapping("/all-with-procedure")
+    public ResponseEntity<List<StudentDTO>> getAllStudentsWithProcedure() {
+        List<StudentDTO> students = studentService.getAllStudentsWithProcedure();
+        return new ResponseEntity<>(students, HttpStatus.OK);
     }
 }
